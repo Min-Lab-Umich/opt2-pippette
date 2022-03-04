@@ -6,6 +6,9 @@ metadata = {'protocolName': 'My Protocol',
     'description': 'Simple protocol to get started using OT2',
     'apiLevel': '2.11'}
 
+# if true, it will shorten the wait time by a factor of 15
+test = False
+
 
 class Lab:
 
@@ -26,7 +29,7 @@ class Lab:
 
         # create a pipette
         self.pipette = protocol.load_instrument(
-            'p1000_single', mount='left', tip_racks=[self.tiprack])
+            'p1000_single_gen2', mount='right', tip_racks=[self.tiprack])
 
         # create a trash
         self.trash = protocol.load_labware('agilent_1_reservoir_290ml', '2', label='trash')
@@ -38,6 +41,8 @@ class Lab:
     def transfer_and_wait(self, where_from, where_to,
                        volume=300, position='A1', waittime=5, 
                        from_reservoir=False):
+        if test:
+            waittime /= 15
         self.pipette.pick_up_tip()
         self.protocol.comment("1")
         self.pipette.transfer(volume, where_from.wells_by_name()[position], where_to.wells_by_name()[position], trash=False, new_tip='never')
@@ -83,3 +88,4 @@ def run(protocol: protocol_api.ProtocolContext):
     protocol.comment("hello, world")
     lab = Lab(protocol=protocol, n=1)
     lab.procedure()
+    # lab.return_tip()
