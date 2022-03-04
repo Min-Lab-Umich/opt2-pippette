@@ -13,7 +13,7 @@ class Lab:
         self.n = n
         self.protocol = protocol
         # tiprack
-        self.tiprack = protocol.load_labware('opentrons_96_tiprack_300ul', '3', label='tiprack')
+        self.tiprack = protocol.load_labware('opentrons_96_filtertiprack_1000ul', '3', label='tiprack')
         # corning_24_wellplate_3.4ml_flat * 3
         self.plates = {}
         plate_locations = [1, 5, 8]
@@ -26,7 +26,7 @@ class Lab:
 
         # create a pipette
         self.pipette = protocol.load_instrument(
-            'p300_single', mount='left', tip_racks=[self.tiprack])
+            'p1000_single', mount='left', tip_racks=[self.tiprack])
 
         # create a trash
         self.trash = protocol.load_labware('agilent_1_reservoir_290ml', '2', label='trash')
